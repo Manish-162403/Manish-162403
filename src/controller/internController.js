@@ -51,4 +51,6 @@ const isValid = function (value) {
     }
 
 
-    module.exports.createIntern = createIntern;
+
+
+module.exports.createIntern = createIntern;
