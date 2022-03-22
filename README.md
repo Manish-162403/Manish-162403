@@ -96,7 +96,7 @@ Refer below sample
     "collegeId" : ObjectId("888771129c9ea621dc7f5e3b")
 }
 ```
-## Response samples
+## Response samples 
 
 ### College details
 ```yaml
