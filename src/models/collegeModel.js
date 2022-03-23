@@ -13,10 +13,10 @@ name: {
     fullName: {
         type:String,
         required:true,
-
+        trim :true
     },
 
-        // example `Indian Institute of Technology, Hyderabad`},
+       
 
  logoLink: {
 

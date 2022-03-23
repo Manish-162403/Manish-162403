@@ -24,17 +24,20 @@ try{
 
         if(!isValid(data.fullName)){return res.status(400).send({status:false , msg:"Full Name is required"})}
 
-      // let checkForFullName = await collegeModel.findOne({fullName:data.fullName})
-      // if(checkForFullName){return res.status(400).send({msg:"College already exists."})}
+      
+   const newfullName =  function convertFirstLetterToUpperCase(str) {
+  var fullName = str.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+  }
+ 
+  return splitStr.join(' '); 
+}
 
-       const a = data.fullName
+      let checkForFullName = await collegeModel.findOne({fullName:data.fullName})
+      if(checkForFullName){return res.status(400).send({msg:"College already exists."})}
 
-      const checkForFullName= await collegeModel.findOne({fullName: {"$regex": a, "$options": "i" }})
-       if(checkForFullName){
-       return res.status(400).send({status:false, message:"college already exist"})
-      }
-
-        if((/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(data.logoLink))){    
+    if((/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(data.logoLink))){    
        
     const savedData = await collegeModel.create(data)
 
@@ -64,7 +67,7 @@ if(!isValid(newData)){return res.status(400).send({ERROR: "Data provided is not 
 
 
 
-const internData = await internModel.find({collegeId:newData._id, isDeleted:false}).select({name:1,email:1,moblie:1})
+const internData = await internModel.find({collegeId:newData._id, isDeleted:false}).select({name:1,email:1,mobile:1})
 if(!isValid(internData)){return res.status(400).send({ERROR: "No intern applied til now"})}
 
 const getData = {name:newData.name,fullName:newData.fullName,logoLink:newData.logoLink,internData}

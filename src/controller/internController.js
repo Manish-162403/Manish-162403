@@ -1,5 +1,6 @@
 const internModel = require("../models/internModel");
 const collegeModel = require("../models/collegeModel");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 // validation........................................................
 
@@ -36,8 +37,9 @@ if (!/^([+]\d{2})?\d{10}$/.test(data.mobile)) {return res.status(400).send({ sta
 if (!isValid(data.collegeId)) {
         return res.status(400).send({ status: false, msg: "email is required" });
    }
-
    if(!data.collegeId){return res.send("college is not present in database")}
+
+   if (!ObjectId.isValid(data.collegeId)) { return res.status(400).send({ status: false, msg: "Please provide a valid College Id" }) }
 
    let dupli = await internModel.findOne({ email: data.email });
 
