@@ -24,15 +24,17 @@ try{
 
         if(!isValid(data.fullName)){return res.status(400).send({status:false , msg:"Full Name is required"})}
 
-      
-   const newfullName =  function convertFirstLetterToUpperCase(str) {
-  var fullName = str.toLowerCase().split(' ');
-  for (var i = 0; i < splitStr.length; i++) {
-      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
-  }
- 
-  return splitStr.join(' '); 
-}
+        const upperCaseFullName=data.fullName
+        
+        let newStringFullName=convertFirstLetterToUpperCase(upperCaseFullName)
+        function convertFirstLetterToUpperCase(upperCaseFullName) {
+          var  splitStr= upperCaseFullName.toLowerCase().split(' ');
+          for (var i = 0; i < splitStr.length; i++) {
+              splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+          }
+         
+          return splitStr.join(' '); 
+        }
 
       let checkForFullName = await collegeModel.findOne({fullName:data.fullName})
       if(checkForFullName){return res.status(400).send({msg:"College already exists."})}
@@ -41,7 +43,7 @@ try{
        
     const savedData = await collegeModel.create(data)
 
-    const collegeDoc = {name:savedData.name, fullName:savedData.fullName, logoLink:savedData.logoLink, isDeleted : false}
+    const collegeDoc = {name:savedData.name, fullName:newStringFullName, logoLink:savedData.logoLink, isDeleted : false}
 
    return res.status(201).send({status: "college Created", collegeDoc})
 
