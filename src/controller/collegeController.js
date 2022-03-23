@@ -24,8 +24,15 @@ try{
 
         if(!isValid(data.fullName)){return res.status(400).send({status:false , msg:"Full Name is required"})}
 
-      let checkForFullName = await collegeModel.findOne({fullName:data.fullName})
-      if(checkForFullName){return res.status(400).send({msg:"College already exists."})}
+      // let checkForFullName = await collegeModel.findOne({fullName:data.fullName})
+      // if(checkForFullName){return res.status(400).send({msg:"College already exists."})}
+
+       const a = data.fullName
+
+      const checkForFullName= await collegeModel.findOne({fullName: {"$regex": a, "$options": "i" }})
+       if(checkForFullName){
+       return res.status(400).send({status:false, message:"college already exist"})
+      }
 
         if((/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(data.logoLink))){    
        
@@ -52,11 +59,13 @@ try{
     const data = req.query.collegeName
 if(!data){return res.status(400).send("college name not found")}
 
-const newData = await collegeModel.findOne({collegeId:data._id, isDeleted:false})
-if(newData.length==0){return res.status(400).send({ERROR: "Data provided is not present in college Database"})}
+const newData = await collegeModel.findOne({name:data, isDeleted:false})
+if(!isValid(newData)){return res.status(400).send({ERROR: "Data provided is not present in college Database"})}
 
-const internData = await internModel.find({id:data._id, isDeleted:false}).select({name:1,email:1,moblie:1})
-if(internData.length==0){return res.status(400).send({ERROR: "No intern applied til now"})}
+
+
+const internData = await internModel.find({collegeId:newData._id, isDeleted:false}).select({name:1,email:1,moblie:1})
+if(!isValid(internData)){return res.status(400).send({ERROR: "No intern applied til now"})}
 
 const getData = {name:newData.name,fullName:newData.fullName,logoLink:newData.logoLink,internData}
 
