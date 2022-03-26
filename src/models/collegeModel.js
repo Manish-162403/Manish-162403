@@ -15,8 +15,7 @@ name: {
         required:true,
         trim :true
     },
-
-       
+    
 
  logoLink: {
 

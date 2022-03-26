@@ -34,12 +34,12 @@ if (!isValid(data.mobile)) {
 
 if (!/^([+]\d{2})?\d{10}$/.test(data.mobile)) {return res.status(400).send({ status: false, msg: "please provide a valid moblie Number" });}
 
-if (!isValid(data.collegeId)) {
+if (!isValid(data.collegeName)) {
         return res.status(400).send({ status: false, msg: "email is required" });
    }
-   if(!data.collegeId){return res.send("college is not present in database")}
+   if(!data.collegeName){return res.send("college is not present in database")}
 
-   if (!ObjectId.isValid(data.collegeId)) { return res.status(400).send({ status: false, msg: "Please provide a valid College Id" }) }
+   //if (!ObjectId.isValid(data.collegeId)) { return res.status(400).send({ status: false, msg: "Please provide a valid College Id" }) }
 
    let dupli = await internModel.findOne({ email: data.email });
 
@@ -51,17 +51,17 @@ if (!isValid(data.collegeId)) {
             if (duplimob) {return res.status(400).send({ status: false, msg: "mobile nmuber already exists" });
             }
    
-//    const savedData = await collegeModel.findOne({name:data.collegeId})
+   const savedData = await collegeModel.findOne({name:data.collegeName})
 
-//    if(!savedData){return res.send("college is not present in database")}
+   if(!savedData){return res.send("college is not present in database")}
  
-//    const id = savedData._id
+   const id = savedData._id
 
-//    if(!id){return res.send("College Id not Found")}
+   if(!id){return res.send("College Id not Found")}
 
-// const newData = {name:data.name,email:data.email,mobile:data.mobile,collegeId:id}
+const newData = {name:data.name,email:data.email,mobile:data.mobile,collegeId:id}
 
-const output = await internModel.create(data)
+const output = await internModel.create(newData)
 
 const createInternData = {isdeleted:false, name:output.name, email:output.email, mobile:output.mobile, collegeId: output.collegeId}
 
